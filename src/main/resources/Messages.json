@@ -1,0 +1,58 @@
+{
+    "name": "API Message processor",
+    "version": 100,
+    "readTO": 111,
+    "writeTO": 22,
+    "xmlMessages": [
+        {
+            "name": "Create VA",
+            "reatTO": 333,
+            "writeTO": 4444,
+            "validators": [
+                "ReadValidator",
+                "WriteValidator",
+                "ExeValidator"
+            ],
+            "executors": [
+                "ReadValidator",
+                "WriteValidator",
+                "ExeValidator"
+            ],
+            "convertors": [
+                "ReadConvertor",
+                "WriteConvertor",
+                "ExeConvertor"
+            ]
+        },
+        {
+            "name": "process WF",
+            "population": 999,
+            "validators": [
+                "ReadValidator-99",
+                "ReadValidator-99",
+                "ReadValidator99"
+            ]
+        }
+    ],
+    
+    "soapMessages": [
+        {
+            "name": "Sopa VA",
+            "population": 77777,
+            "listOfStates": [
+                "Chern Pradesh",
+                "Maharastra",
+                "Rajasthan"
+            ]
+        },
+        {
+            "name": "Soap WF",
+            "population": 999,
+            "listOfStates": [
+                "Madhya-99",
+                "Maha-99",
+                "Raja==99"
+            ]
+        }
+    ]
+}

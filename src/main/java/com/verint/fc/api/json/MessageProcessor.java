@@ -1,62 +1,76 @@
 package com.verint.fc.api.json;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.List;
 
-import com.google.gson.Gson;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.verint.fc.api.ApiMain;
+import com.verint.fc.api.convert.IConverter;
+import com.verint.fc.api.message.IMessage;
+import com.verint.fc.api.validator.IValidator;
 
 /**
  * Created by OBranopolsky on 14/08/2015.
  */
+
+@Service
 public class MessageProcessor {
 
-	public static void main(String[] args) throws Exception {
-		Gson gson = new Gson();
-		BufferedReader br = new BufferedReader(new FileReader("Messages.json"));
+	@Autowired
+	XmlMessage xmlMessage;
 
-		// convert the json string back to object
-		Messages messages = gson.fromJson(br, Messages.class);
-		System.out.println("--------");
+	@Autowired
+	SoapMessage soapMessage;
 
-		System.out.println("version:" + messages.getVersion());
-		System.out.println("Name:" + messages.getName());
-		System.out.println("--------");
+	@Autowired
+	MessageConfigLoader msgConf;
 
-		List<XmlMessage> xmls = messages.getXmlMessages();
+	// public MessageProcessor() {
+	// System.out.println("MessageProcessor: ctor ");
+	// }
 
-		for (XmlMessage x : xmls) {
-			System.out.println("name: " + x.getName());
-			System.out.println("read T/O: " + x.getReatTO());
-			System.out.println("write T/O: " + x.getWriteTO());
+	public void process(String msgName) {
 
-			List<String> validators = x.getValidators();
-			int i = 0;
-			for (String v : validators) {
-				System.out.println(++i + ": " + v);
+		String errorMsg = msgName;
+		if (msgConf.containMessage(msgName)) {
+			try {
+				IMessage m = (IMessage) ApiMain.getBean(msgName);
+
+				List<String> validators = msgConf.getValidators(msgName);
+
+				for (String v : validators) {
+					try {
+						IValidator validator = (IValidator) ApiMain.getBean(v);
+						validator.validate();
+					} catch (NoSuchBeanDefinitionException e) {
+						// e.printStackTrace();
+						System.out.println("... " + v + " validator  have not implemented yet.");
+					}
+				}
+
+				List<String> converter = msgConf.getConverters(msgName);
+
+				for (String v : converter) {
+					try {
+						IConverter c = (IConverter) ApiMain.getBean(v);
+						c.convert();
+					} catch (NoSuchBeanDefinitionException e) {
+						// e.printStackTrace();
+						System.out.println("... " + v + " converter have not implemented yet.");
+					}
+				}
+
+				m.process();
+			} catch (NoSuchBeanDefinitionException e) {
+				// e.printStackTrace();
+				System.out.println("... " + errorMsg + " have not implemented yet.");
 			}
 
-			List<String> convertors = x.getConvertors();
-			if (convertors != null) {
-				System.out.println("Convertor:" + convertors);
-			}
-
-			List<String> executors = x.getExecutors();
-			if (executors != null) {
-
-				System.out.println("Executors: " + executors);
-			}
-			System.out.println("--------------\n");
+		} else {
+			System.out.println("... " + msgName + " message type does not defined in configuration");
 		}
 
-		List<SoapMessage> soapMessages = messages.getSoapMessages();
-		if (soapMessages != null) {
-			int i = 1;
-			for (SoapMessage s : soapMessages) {
-				System.out.println(i++ + ". soapMessage: "+ s.getName());
-			}
-		}
-		System.out.print("===END==");
 	}
-
 }

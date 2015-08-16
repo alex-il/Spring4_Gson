@@ -5,45 +5,50 @@
     "writeTO": 22,
     "xmlMessages": [
         {
-            "name": "CreateVA",
+            "name": "createVA",
             "reatTO": 333,
             "writeTO": 4444,
             "validators": [
-                "ReadValidator",
-                "WriteValidator",
-                "ExeValidator"
+                "readValidator",
+                "writeValidator",
+                "exeValidator"
             ]
             , "executors": [
-                 "ReadExecutor"
-                ,"WriteExecutor"
-                ,"VaReqExecutor"
-                ,"VaRespExecutor"
+                 "readExecutor"
+                ,"writeExecutor"
+                ,"vaReqExecutor"
+                ,"vaRespExecutor"
             ]
             , "convertors": [
-                 "ReadConvertor"
-               , "WriteConvertor"
-               , "ExeConvertor"
+                 "dateConverter"
+               , "exeConverter"
             ]
         },
         {
             "name": "processWF",
-            "population": 999,
+            "writeTO": 999,
+            "reatTO": 333,
             "validators": [
-                "ReadValidator"
-                , "ReadValidator99"
-                , "ExeValidator"
+                "readValidator"
+                , "readValidator99"
+                , "exeValidator"
             ]
         	, "executors": [
-                "WfEeqExecutor"
-                ,"WfRespExecutor"
+                "wfEeqExecutor"
+                ,"wfRespExecutor"
             ]
+              , "convertors": [
+                 "dateConverter"
+               , "wfConverter"
+            ]
+            
             
         }
     ],
     
     "soapMessages": [
         {
-            "name": "Sopa VA",
+            "name": "SoapVA",
             "population": 77777,
             "listOfStates": [
                 "Chern Pradesh",

@@ -1,9 +1,13 @@
 package com.verint.fc.api.json;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 /**
  * Created by OBranopolsky on 17/06/2015.
  */
+
+@Service
 public class XmlMessage {
     private String name;
     public int getReatTO() {

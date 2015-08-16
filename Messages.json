@@ -5,33 +5,39 @@
     "writeTO": 22,
     "xmlMessages": [
         {
-            "name": "Create VA",
+            "name": "CreateVA",
             "reatTO": 333,
             "writeTO": 4444,
             "validators": [
                 "ReadValidator",
                 "WriteValidator",
                 "ExeValidator"
-            ],
-            "executors": [
-                "ReadValidator",
-                "WriteValidator",
-                "ExeValidator"
-            ],
-            "convertors": [
-                "ReadConvertor",
-                "WriteConvertor",
-                "ExeConvertor"
+            ]
+            , "executors": [
+                 "ReadExecutor"
+                ,"WriteExecutor"
+                ,"VaReqExecutor"
+                ,"VaRespExecutor"
+            ]
+            , "convertors": [
+                 "ReadConvertor"
+               , "WriteConvertor"
+               , "ExeConvertor"
             ]
         },
         {
-            "name": "process WF",
+            "name": "processWF",
             "population": 999,
             "validators": [
-                "ReadValidator-99",
-                "ReadValidator-99",
-                "ReadValidator99"
+                "ReadValidator"
+                , "ReadValidator99"
+                , "ExeValidator"
             ]
+        	, "executors": [
+                "WfEeqExecutor"
+                ,"WfRespExecutor"
+            ]
+            
         }
     ],
     

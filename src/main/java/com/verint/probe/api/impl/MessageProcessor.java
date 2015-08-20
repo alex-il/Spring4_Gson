@@ -1,4 +1,4 @@
-package com.verint.fc.api.json;
+package com.verint.probe.api.impl;
 
 import java.util.List;
 
@@ -6,17 +6,21 @@ import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.verint.fc.api.ApiMain;
-import com.verint.fc.api.convert.IConverter;
-import com.verint.fc.api.message.IMessage;
-import com.verint.fc.api.validator.IValidator;
+import com.verint.probe.api.ApiUtil;
+import com.verint.probe.api.IMessageProcessor;
+import com.verint.probe.api.convert.IConverter;
+import com.verint.probe.api.json.MessageConfigLoader;
+import com.verint.probe.api.json.SoapMessage;
+import com.verint.probe.api.json.XmlMessage;
+import com.verint.probe.api.message.IMessage;
+import com.verint.probe.api.validator.IValidator;
 
 /**
  * Created by OBranopolsky on 14/08/2015.
  */
 
 @Service
-public class MessageProcessor {
+public class MessageProcessor implements IMessageProcessor {
 
 	@Autowired
 	XmlMessage xmlMessage;
@@ -31,18 +35,18 @@ public class MessageProcessor {
 	// System.out.println("MessageProcessor: ctor ");
 	// }
 
-	public void process(String msgName) {
+	public Object process(Object request, String msgName) {
 
 		String errorMsg = msgName;
 		if (msgConf.containMessage(msgName)) {
 			try {
-				IMessage m = (IMessage) ApiMain.getBean(msgName);
+				IMessage m = (IMessage) ApiUtil.getBean(msgName);
 
 				List<String> validators = msgConf.getValidators(msgName);
 
 				for (String v : validators) {
 					try {
-						IValidator validator = (IValidator) ApiMain.getBean(v);
+						IValidator validator = (IValidator) ApiUtil.getBean(v);
 						validator.validate();
 					} catch (NoSuchBeanDefinitionException e) {
 						// e.printStackTrace();
@@ -54,7 +58,7 @@ public class MessageProcessor {
 
 				for (String v : converter) {
 					try {
-						IConverter c = (IConverter) ApiMain.getBean(v);
+						IConverter c = (IConverter) ApiUtil.getBean(v);
 						c.convert();
 					} catch (NoSuchBeanDefinitionException e) {
 						// e.printStackTrace();
@@ -71,6 +75,7 @@ public class MessageProcessor {
 		} else {
 			System.out.println("... " + msgName + " message type does not defined in configuration");
 		}
+		return null;
 
 	}
 }

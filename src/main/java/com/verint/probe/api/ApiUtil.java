@@ -1,17 +1,17 @@
-package com.verint.fc.api;
+package com.verint.probe.api;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import com.verint.fc.api.json.MessageProcessor;
+import com.verint.probe.api.impl.MessageProcessor;
 
 
 
 @Configuration
-@ComponentScan("com.verint.fc.api")
-public class ApiMain {
+@ComponentScan("com.verint.probe.api")
+public class ApiUtil {
  
   private static ApplicationContext context;
 
@@ -24,11 +24,11 @@ public class ApiMain {
 	}
 	
 	public static void setContext(ApplicationContext context) {
-		ApiMain.context = context;
+		ApiUtil.context = context;
 	}
 
 	public static void main(String[] args) {
-      context = new AnnotationConfigApplicationContext(ApiMain.class);
+      context = new AnnotationConfigApplicationContext(ApiUtil.class);
 //      this is same to next line
 //      CustomerService cs = (CustomerService) context.getBean("customerService");
 //      CustomerService cs = context.getBean(CustomerService.class);
@@ -36,11 +36,15 @@ public class ApiMain {
 //  
 //      HelloWorld obj = (HelloWorld) context.getBean("aaa");
 //  		obj.printHello();
-      MessageProcessor mp = context.getBean( MessageProcessor.class);
+      IMessageProcessor mp = newMessageProcessor();
       String messages[] = {"createVA","processWF", "New_Type"};
       for (String m : messages) {
       	System.out.println("Start processing the: "+ m);
-				mp.process(m);
+				mp.process(new Object(), m);
 			}
   }
+
+	private static MessageProcessor newMessageProcessor() {
+		return context.getBean( MessageProcessor.class);
+	}
 }

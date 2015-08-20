@@ -1,4 +1,4 @@
-{
+ {
     "name": "API Message processor",
     "version": 100,
     "readTO": 111,
@@ -21,7 +21,14 @@
             ]
             , "convertors": [
                  "dateConverter"
-               , "exeConverter"
+               , "eim1_Converter"
+               , "returnConverter"
+            ]
+            , "returnType": [
+                 "SelectVAResponse"
+            ]
+            , "inputType": [
+                 "inputRequest"
             ]
         },
         {
@@ -40,6 +47,7 @@
               , "convertors": [
                  "dateConverter"
                , "wfConverter"
+               , "vovaConverter"
             ]
             
             

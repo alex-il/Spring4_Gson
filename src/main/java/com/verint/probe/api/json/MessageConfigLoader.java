@@ -1,4 +1,4 @@
-package com.verint.fc.api.json;
+package com.verint.probe.api.json;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

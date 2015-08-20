@@ -9,7 +9,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
-import com.sun.org.apache.bcel.internal.generic.ALOAD;
 
 /**
  * Created by OBranopolsky on 14/08/2015.
@@ -20,15 +19,16 @@ public class MessageConfigLoader {
 
 	private Messages msgConfig;
 	private List<String> messageNames = new ArrayList<String>();
+	private static final String CONFIG_FILE = "msg-config.json";
 
 	public MessageConfigLoader() {
 		Gson json = new Gson();
 		BufferedReader br;
 		try {
-			br = new BufferedReader(new FileReader("Messages.json"));
+			br = new BufferedReader(new FileReader(CONFIG_FILE));
 			setMsgConfig(json.fromJson(br, Messages.class));
 		} catch (FileNotFoundException e) {
-			System.err.println("bad Messages.json");
+			System.err.println("bad "+CONFIG_FILE);
 			setMsgConfig(null);
 		}
 		List<XmlMessage> xmls = msgConfig.getXmlMessages();

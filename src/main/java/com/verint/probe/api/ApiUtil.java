@@ -13,7 +13,7 @@ import com.verint.probe.api.impl.MessageProcessor;
 @ComponentScan("com.verint.probe.api")
 public class ApiUtil {
  
-  private static ApplicationContext context;
+  private static ApplicationContext context = new AnnotationConfigApplicationContext(ApiUtil.class);
 
 	public static Object getBean(String bean) {
 		return context.getBean(bean);
@@ -28,7 +28,6 @@ public class ApiUtil {
 	}
 
 	public static void main(String[] args) {
-      context = new AnnotationConfigApplicationContext(ApiUtil.class);
 //      this is same to next line
 //      CustomerService cs = (CustomerService) context.getBean("customerService");
 //      CustomerService cs = context.getBean(CustomerService.class);
@@ -44,7 +43,7 @@ public class ApiUtil {
 			}
   }
 
-	private static MessageProcessor newMessageProcessor() {
+	public static IMessageProcessor newMessageProcessor() {
 		return context.getBean( MessageProcessor.class);
 	}
 }

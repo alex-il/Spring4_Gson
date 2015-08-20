@@ -31,19 +31,16 @@ public class MessageProcessor implements IMessageProcessor {
 	@Autowired
 	MessageConfigLoader msgConf;
 
-	// public MessageProcessor() {
-	// System.out.println("MessageProcessor: ctor ");
-	// }
-
 	public Object process(Object request, String msgName) {
 
 		String errorMsg = msgName;
+		Object retObj = null;
 		if (msgConf.containMessage(msgName)) {
 			try {
 				IMessage m = (IMessage) ApiUtil.getBean(msgName);
 
+//			Validator processor
 				List<String> validators = msgConf.getValidators(msgName);
-
 				for (String v : validators) {
 					try {
 						IValidator validator = (IValidator) ApiUtil.getBean(v);
@@ -54,8 +51,8 @@ public class MessageProcessor implements IMessageProcessor {
 					}
 				}
 
+//			Converter processor				
 				List<String> converter = msgConf.getConverters(msgName);
-
 				for (String v : converter) {
 					try {
 						IConverter c = (IConverter) ApiUtil.getBean(v);
@@ -66,7 +63,7 @@ public class MessageProcessor implements IMessageProcessor {
 					}
 				}
 
-				m.process();
+				retObj = m.process(request);
 			} catch (NoSuchBeanDefinitionException e) {
 				// e.printStackTrace();
 				System.out.println("... " + errorMsg + " have not implemented yet.");
@@ -75,7 +72,8 @@ public class MessageProcessor implements IMessageProcessor {
 		} else {
 			System.out.println("... " + msgName + " message type does not defined in configuration");
 		}
-		return null;
+		System.out.println("retObj: "+retObj+"\n");
+		return retObj;
 
 	}
 }

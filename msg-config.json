@@ -1,0 +1,77 @@
+ {
+    "name": "API Message processor",
+    "version": 100,
+    "readTO": 111,
+    "writeTO": 22,
+    "xmlMessages": [
+        {
+            "name": "createVA",
+            "reatTO": 333,
+            "writeTO": 4444,
+            "validators": [
+                "readValidator",
+                "writeValidator",
+                "exeValidator"
+            ]
+            , "executors": [
+                 "readExecutor"
+                ,"writeExecutor"
+                ,"vaReqExecutor"
+                ,"vaRespExecutor"
+            ]
+            , "convertors": [
+                 "dateConverter"
+               , "eim1_Converter"
+               , "returnConverter"
+            ]
+            , "returnType": [
+                 "SelectVAResponse"
+            ]
+            , "inputType": [
+                 "inputRequest"
+            ]
+        },
+        {
+            "name": "processWF",
+            "writeTO": 999,
+            "reatTO": 333,
+            "validators": [
+                "readValidator"
+                , "readValidator99"
+                , "exeValidator"
+            ]
+        	, "executors": [
+                "wfEeqExecutor"
+                ,"wfRespExecutor"
+            ]
+              , "convertors": [
+                 "dateConverter"
+               , "wfConverter"
+               , "vovaConverter"
+            ]
+            
+            
+        }
+    ],
+    
+    "soapMessages": [
+        {
+            "name": "SoapVA",
+            "population": 77777,
+            "listOfStates": [
+                "Chern Pradesh",
+                "Maharastra",
+                "Rajasthan"
+            ]
+        },
+        {
+            "name": "Soap WF",
+            "population": 999,
+            "listOfStates": [
+                "Madhya-99",
+                "Maha-99",
+                "Raja==99"
+            ]
+        }
+    ]
+}
